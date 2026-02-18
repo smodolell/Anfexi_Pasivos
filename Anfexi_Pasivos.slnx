@@ -1,0 +1,28 @@
+<Solution>
+  <Folder Name="/Infrastructure/">
+    <Project Path="src/Infrastructure/Anfexi.AppHost/Anfexi.AppHost.csproj" />
+  </Folder>
+  <Folder Name="/Services/" />
+  <Folder Name="/Services/Auth/">
+    <Project Path="src/ApiService/Auth/Anfx.Auth.ApiService/Anfx.Auth.ApiService.csproj" />
+    <Project Path="src/ApiService/Auth/Anfx.Auth.Application/Anfx.Auth.Application.csproj" Id="1eb6cbc7-12e9-42ee-bfe2-764e093b25d5" />
+  </Folder>
+  <Folder Name="/Services/Pasivo/">
+    <Project Path="src/ApiService/Pasivos/Anfx.Pasivos.ApiService/Anfx.Pasivos.ApiService.csproj" />
+    <Project Path="src/ApiService/Pasivos/Anfx.Pasivos.Application/Anfx.Pasivos.Application.csproj" />
+  </Folder>
+  <Folder Name="/Services/Sistema/">
+    <Project Path="src/ApiService/Sistema/Anfx.Sistema.ApiService/Anfx.Sistema.ApiService.csproj" />
+    <Project Path="src/ApiService/Sistema/Anfx.Sistema.Application/Anfx.Sistema.Application.csproj" Id="42d4b1d8-0053-495c-9f3c-b7041ac4f3e1" />
+  </Folder>
+  <Folder Name="/Shared/">
+    <Project Path="src/Shared/Anfx.Domain/Anfx.Domain.csproj" Id="a9bd2d8d-bf18-48d1-aaec-7fa288e5befc" />
+    <Project Path="src/Shared/Anfx.Infrastructure/Anfx.Infrastructure.csproj" Id="8af7d5f4-d5f9-454c-aafc-2e4eb4bf6f42" />
+  </Folder>
+  <Folder Name="/Site/">
+    <Project Path="src/Site/Pasivos_Frontend/Pasivos_Frontend.esproj">
+      <Build />
+      <Deploy />
+    </Project>
+  </Folder>
+</Solution>

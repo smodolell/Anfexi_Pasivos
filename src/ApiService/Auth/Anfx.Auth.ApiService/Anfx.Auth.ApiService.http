@@ -1,0 +1,6 @@
+@Anfx.Auth.ApiService_HostAddress = http://localhost:5212
+
+GET {{Anfx.Auth.ApiService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
