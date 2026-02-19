@@ -6,8 +6,13 @@ var apiPasivos = builder.AddProject<Projects.Anfx_Pasivos_ApiService>("anfx-pasi
 
 var frontEnd = builder.AddJavaScriptApp("pasivo-frontend", "..\\..\\Site\\Pasivos_Frontend")
     .WithRunScript("start:aspire")
-    .WithHttpEndpoint(targetPort: 4201);
+    .WithHttpEndpoint(targetPort: 4200, name: "http",isProxied:false) // Importante: solo targetPort
+    .WithEnvironment("NODE_ENV", "development");
 
+
+frontEnd.WithReference(apiAuth);
+frontEnd.WithReference(apiSistema);
+frontEnd.WithReference(apiPasivos);
 
 
 

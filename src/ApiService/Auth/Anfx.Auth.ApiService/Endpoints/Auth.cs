@@ -12,9 +12,11 @@ namespace Anfx.Auth.ApiService.Endpoints;
 
 public class Auth : EndpointGroupBase
 {
+
+    public override string? GroupName => "auth";
     public override void Map(RouteGroupBuilder groupBuilder)
     {
-        var group = groupBuilder.MapGroup("/api/auth")
+        var group = groupBuilder.MapGroup("/")
           .WithTags("Auth");
 
 
@@ -64,7 +66,7 @@ public class Auth : EndpointGroupBase
         };
 
         var result = await commandMediator.SendAsync(command);
-        return result.ToMinimalApiResult();
+        return result.ToCustomMinimalApiResult();
     }
 
     public async Task<IResult> LoginByUserName(
@@ -80,7 +82,7 @@ public class Auth : EndpointGroupBase
         };
 
         var result = await commandMediator.SendAsync(command);
-        return result.ToMinimalApiResult();
+        return result.ToCustomMinimalApiResult();
     }
 
     public static async Task<IResult> ValidateToken(
@@ -90,6 +92,6 @@ public class Auth : EndpointGroupBase
     {
         var query = new ValidateTokenQuery(token);
         var result = await queryMediator.QueryAsync(query);
-        return result.ToMinimalApiResult();
+        return result.ToCustomMinimalApiResult();
     }
 }
