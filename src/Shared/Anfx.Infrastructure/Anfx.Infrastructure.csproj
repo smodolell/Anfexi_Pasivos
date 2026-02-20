@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.105.0" />
     <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.3">
@@ -17,8 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ApiService\Auth\Anfx.Auth.Application\Anfx.Auth.Application.csproj" />
-    <ProjectReference Include="..\..\ApiService\Sistema\Anfx.Sistema.Application\Anfx.Sistema.Application.csproj" />
+    <ProjectReference Include="..\Anfx.Common.Application\Anfx.Common.Application.csproj" />
     <ProjectReference Include="..\Anfx.Domain\Anfx.Domain.csproj" />
   </ItemGroup>
 

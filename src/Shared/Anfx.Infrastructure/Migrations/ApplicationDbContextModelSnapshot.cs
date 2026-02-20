@@ -284,6 +284,40 @@ namespace Anfx.Infrastructure.Migrations
                     b.ToTable("Usuario", "web");
                 });
 
+            modelBuilder.Entity("Anfx.Profuturo.Catalogo.Domain.Entities.Colonia", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CodigoPostal")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Municipio")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("sColonia")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasColumnName("Colonia");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Colonia", "cat");
+                });
+
             modelBuilder.Entity("Anfx.Domain.Entities.Menu", b =>
                 {
                     b.HasOne("Anfx.Domain.Entities.Menu", null)

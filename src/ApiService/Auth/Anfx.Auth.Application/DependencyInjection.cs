@@ -1,5 +1,4 @@
-﻿using Anfx.Auth.Application.Common.Services;
-using LiteBus.Commands;
+﻿using LiteBus.Commands;
 using LiteBus.Extensions.Microsoft.DependencyInjection;
 using LiteBus.Queries;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,11 +10,11 @@ public static class DependencyInjection
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
 
-        services.AddValidatorsFromAssemblyContaining<Dummy>();
+        services.AddValidatorsFromAssemblyContaining<AuthApplicationMarker>();
 
         services.AddLiteBus(configuration =>
         {
-            var assembly = typeof(DependencyInjection).Assembly;
+            var assembly = typeof(AuthApplicationMarker).Assembly;
 
             configuration.AddCommandModule(m => m.RegisterFromAssembly(assembly));
             configuration.AddQueryModule(m => m.RegisterFromAssembly(assembly));
@@ -23,7 +22,7 @@ public static class DependencyInjection
         });
 
 
-        services.AddScoped<IPaginator, Paginator>();
+        
 
 
 
@@ -31,4 +30,4 @@ public static class DependencyInjection
         return services;
     }
 }
-class Dummy { }
+class AuthApplicationMarker { }

@@ -21,7 +21,7 @@ export class UsuarioListComponent implements OnInit {
   items = signal<UsuarioItemDto[]>([]);
   loading = signal<boolean>(false);
   query: UsuarioPageQueryDto = { q: '', page: 1, size: 10, activo: true };
-  
+
   // metadata de paginación
   totalCount = signal<number>(0);
   totalPages = signal<number>(0);
@@ -77,7 +77,7 @@ export class UsuarioListComponent implements OnInit {
           this.pageSize.set(this.query.size || 10);
           this.totalCount.set(0);
           this.totalPages.set(0);
-          
+
           if (response.errors && response.errors.length > 0) {
             // Mostrar el primer error
             this.utilsService.showNotification('Error', response.errors[0], 'error');
@@ -99,7 +99,7 @@ export class UsuarioListComponent implements OnInit {
         this.totalCount.set(0);
         this.totalPages.set(0);
         this.loading.set(false);
-        
+
         // Mostrar error de conexión
         this.utilsService.showNotification('Error', 'Error de conexión al cargar usuarios', 'error');
         console.error('Error HTTP:', httpError);

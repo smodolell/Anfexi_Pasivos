@@ -1,11 +1,9 @@
 ﻿using Anfx.Auth.ApiService.Infrastructure;
 using Anfx.Auth.ApiService.Requests.Auth;
+using Anfx.Auth.ApiService.Responses.Auth;
 using Anfx.Auth.Application.Feactures.Auth.Commands.Login;
 using Anfx.Auth.Application.Feactures.Auth.DTOs;
 using Anfx.Auth.Application.Feactures.Auth.Queries;
-using Ardalis.Result.AspNetCore;
-using LiteBus.Commands.Abstractions;
-using LiteBus.Queries.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Anfx.Auth.ApiService.Endpoints;
@@ -25,7 +23,7 @@ public class Auth : EndpointGroupBase
             .WithSummary("Login por Correo Electronico")
             .WithDescription("Autentica un usuario con email y contraseña")
             .Accepts<LoginRequestDto>("application/json")
-            .Produces<int>(StatusCodes.Status201Created)
+            .Produces<LoginResponse>(StatusCodes.Status200OK)
             .Produces<int>(StatusCodes.Status201Created)
             .Produces<ValidationProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status409Conflict);
@@ -36,7 +34,7 @@ public class Auth : EndpointGroupBase
             .WithSummary("Login por Nombre de Usuario")
             .WithDescription("Autentica un usuario con nombre de usuario y contraseña")
             .Accepts<LoginByUsernameRequestDto>("application/json")
-            .Produces<int>(StatusCodes.Status200OK)
+            .Produces<LoginResponse>(StatusCodes.Status200OK)
             .Produces<ValidationProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ValidationProblemDetails>(StatusCodes.Status401Unauthorized)
             .Produces<ValidationProblemDetails>(StatusCodes.Status500InternalServerError)
@@ -66,6 +64,22 @@ public class Auth : EndpointGroupBase
         };
 
         var result = await commandMediator.SendAsync(command);
+        if(result.IsSuccess)
+        {
+            var r = new LoginResponse(true,new UserInfo(result.Value.Id)
+            {
+                NombreCompleto = result.Value.NombreCompleto,
+                Email = result.Value.Email,
+                UsuarioNombre = result.Value.UsuarioNombre,
+                Role = result.Value.Role
+            })
+            {
+                Message = "Login exitoso",
+                Token = result.Value.Token
+            };
+            return Results.Ok(r);
+        }
+        
         return result.ToCustomMinimalApiResult();
     }
 

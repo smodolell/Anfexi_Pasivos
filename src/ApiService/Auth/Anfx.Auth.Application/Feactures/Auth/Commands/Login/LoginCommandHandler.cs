@@ -1,6 +1,4 @@
-using Anfx.Auth.Application.Common.Utils;
 using Anfx.Auth.Application.Feactures.Auth.DTOs;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Anfx.Auth.Application.Feactures.Auth.Commands.Login;
 

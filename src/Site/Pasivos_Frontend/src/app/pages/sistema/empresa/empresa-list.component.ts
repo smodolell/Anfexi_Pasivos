@@ -21,32 +21,32 @@ export class EmpresaListComponent implements OnInit {
   items = signal<EmpresaDto[]>([]);
   loading = signal<boolean>(false);
   query: EmpresaPageQueryDto = { q: '', page: 1, size: 10 };
-  
+
   totalCount = signal<number>(0);
   totalPages = signal<number>(0);
   currentPage = signal<number>(1);
   pageSize = signal<number>(10);
 
-  empresaSeleccionada: Partial<EmpresaDto> = { 
-    id: 0, 
-    sEmpresa: '', 
-    rFC: '', 
-    razonSocial: '', 
-    telefono: '', 
-    representante: '', 
-    avisosEstadodeCuenta: '', 
-    advertenciasEstadodeCuenta: '', 
-    aclaracionesEstadodeCuenta: '', 
-    usaDesembolso: false, 
-    pasivo: false, 
+  empresaSeleccionada: Partial<EmpresaDto> = {
+    id: 0,
+    sEmpresa: '',
+    rFC: '',
+    razonSocial: '',
+    telefono: '',
+    representante: '',
+    avisosEstadodeCuenta: '',
+    advertenciasEstadodeCuenta: '',
+    aclaracionesEstadodeCuenta: '',
+    usaDesembolso: false,
+    pasivo: false,
     tipoDireccionId: 0,
-    calle: '', 
-    numExterior: '', 
-    numInterior: '' 
+    calle: '',
+    numExterior: '',
+    numInterior: ''
   };
   mostrandoFormulario = signal<boolean>(false);
   empresaAEliminar: EmpresaDto | null = null;
-  
+
   // Exponer Math para usar en el template
   Math = Math;
 
@@ -90,7 +90,7 @@ export class EmpresaListComponent implements OnInit {
           this.pageSize.set(this.query.size || 10);
           this.totalCount.set(0);
           this.totalPages.set(0);
-          
+
           if (response.errors && response.errors.length > 0) {
             this.utilsService.showNotification('Error', response.errors[0], 'error');
           } else if (response.message) {
@@ -127,7 +127,7 @@ export class EmpresaListComponent implements OnInit {
       aclaracionesEstadodeCuenta: '',
       usaDesembolso: false,
       pasivo: false,
-      tipoDireccionId: undefined,   
+      tipoDireccionId: undefined,
       calle: '',
       numExterior: '',
       numInterior: ''

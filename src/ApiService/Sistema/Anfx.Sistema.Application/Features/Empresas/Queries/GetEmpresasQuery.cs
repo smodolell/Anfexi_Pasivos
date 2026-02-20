@@ -1,4 +1,3 @@
-using Anfx.Sistema.Application.Common.DTOs;
 using Anfx.Sistema.Application.Features.Empresas.DTOs;
 
 namespace Anfx.Sistema.Application.Features.Empresas.Queries;

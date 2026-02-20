@@ -21,7 +21,7 @@ export class RolListComponent implements OnInit {
   items = signal<RolDto[]>([]);
   loading = signal<boolean>(false);
   query: RolPageQueryDto = { q: '', page: 1, size: 10, sortby: []};
-  
+
   totalCount = signal<number>(0);
   totalPages = signal<number>(0);
   currentPage = signal<number>(1);
@@ -30,7 +30,7 @@ export class RolListComponent implements OnInit {
   rolSeleccionado: Partial<RolDto> = { id: 0, sRol: '', descripcion: '' };
   mostrandoFormulario = signal<boolean>(false);
   rolAEliminar: RolDto | null = null;
-  
+
   // Exponer Math para usar en el template
   Math = Math;
 
@@ -76,7 +76,7 @@ export class RolListComponent implements OnInit {
           this.pageSize.set(this.query.size || 10);
           this.totalCount.set(0);
           this.totalPages.set(0);
-          
+
           if (response.errors && response.errors.length > 0) {
             this.utilsService.showNotification('Error', response.errors[0], 'error');
           } else if (response.message) {
@@ -280,7 +280,7 @@ export class RolListComponent implements OnInit {
 
       orderByDesc = true;
     }
-    else 
+    else
     {
       element?.classList.add('ti-arrow-up');
       element?.classList.remove('ti-arrow-down');
@@ -288,7 +288,7 @@ export class RolListComponent implements OnInit {
       orderByDesc = false;
     }
 
-    const indexToRemove = this.query.sortby?.findIndex(param => 
+    const indexToRemove = this.query.sortby?.findIndex(param =>
       param.column === id
     );
 

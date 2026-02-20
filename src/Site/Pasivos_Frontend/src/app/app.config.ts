@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -10,6 +10,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
+    provideZonelessChangeDetection(),
     provideRouter(routes),
     provideHttpClient(
       withFetch(),
@@ -21,7 +22,7 @@ export const appConfig: ApplicationConfig = {
     },
     {
       provide: API_CATALOGO_URL,
-      useValue: process.env['NODE_ENV'] === 'production' ? 'https://dev.anfexi.com/profuturo/backend/catalogo/api' : 'https://localhost:5291/api'
+      useValue: process.env['NODE_ENV'] === 'production' ? 'https://dev.anfexi.com/profuturo/backend/catalogo/api' : 'https://localhost:7055/api'
     },
     {
       provide: API_SISTEMA_URL,

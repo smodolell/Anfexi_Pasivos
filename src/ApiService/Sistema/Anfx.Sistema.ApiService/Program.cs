@@ -16,11 +16,20 @@ var configuration = builder.Configuration;
 
 // Add services to the container.
 builder.Services.AddApplicationServices();
-builder.Services.AddInfrastructureServices(configuration);
+builder.Services.AddCommonInfrastructureServices(configuration);
+builder.Services.AddSistemaInfrastructureServices(configuration);
+
 builder.AddWebServices();
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddControllers();
+
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+builder.Services.AddProblemDetails(options =>
+{
+    options.CustomizeProblemDetails = context =>
+    {
+        context.ProblemDetails.Extensions["server"] = Environment.MachineName;
+    };
+});
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = jwtSettings["SecretKey"];
@@ -42,6 +51,7 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey ?? ""))
     };
 });
+builder.Services.AddAuthorization();
 
 // Configuración de CORS
 builder.Services.AddCors(options =>
@@ -61,6 +71,8 @@ builder.Services.AddCors(options =>
 });
 var app = builder.Build();
 
+app.UseExceptionHandler();
+app.UseStatusCodePages();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -85,7 +97,7 @@ app.UseExceptionHandler(options => { });
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseRouting();
 app.UseCors("AllowAngular");
 app.UseAuthentication();
 app.UseAuthorization();
@@ -101,7 +113,7 @@ app.MapScalarApiReference(options =>
     options.ShowSidebar = true; // Muestra u oculta la barra lateral
     options.DarkMode = false;
 });
-app.UseRouting();
+
 
 app.Map("/", () => Results.Redirect("/scalar"));
 

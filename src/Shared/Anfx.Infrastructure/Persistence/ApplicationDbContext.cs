@@ -1,11 +1,11 @@
-using Anfx.Auth.Application.Common.Interfaces;
+using Anfx.Common.Application.Interfaces;
 using Anfx.Domain.Entities;
-using Anfx.Sistema.Application.Common.Interfaces;
+using Anfx.Profuturo.Catalogo.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Anfx.Infrastructure.Persistence;
 
-public class ApplicationDbContext : DbContext , ISistemaDbContext, IAuthDbContext
+public class ApplicationDbContext : DbContext , ISistemaDbContext, IAuthDbContext, ICatalogoDbContext
 {
 
     public DbSet<Usuario> Usuarios => Set<Usuario>();
@@ -14,7 +14,8 @@ public class ApplicationDbContext : DbContext , ISistemaDbContext, IAuthDbContex
     public DbSet<Menu> Menus => Set<Menu>();
     public DbSet<TipoDireccion> TiposDirecciones => Set<TipoDireccion>();
 
-    
+    public DbSet<Colonia> Colonias =>  Set<Colonia>();
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
     }

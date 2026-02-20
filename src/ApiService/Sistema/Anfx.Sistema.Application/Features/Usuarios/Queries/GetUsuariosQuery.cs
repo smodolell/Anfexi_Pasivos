@@ -9,17 +9,28 @@ public class GetUsuariosQueryHandler : IQueryHandler<GetUsuariosQuery, Result<Pa
 {
     private readonly ISistemaDbContext _context;
     private readonly IMapper _mapper;
+    private readonly IValidator<GetUsuariosQuery> _validator;
 
-    public GetUsuariosQueryHandler(ISistemaDbContext context, IMapper mapper)
+    public GetUsuariosQueryHandler(ISistemaDbContext context, IMapper mapper,IValidator<GetUsuariosQuery> validator)
     {
         _context = context;
         _mapper = mapper;
+        this._validator = validator;
     }
 
     public async Task<Result<PagedResultDto<UsuarioDto>>> HandleAsync(GetUsuariosQuery request, CancellationToken cancellationToken = default)
     {
         try
         {
+
+            var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+            if (!validationResult.IsValid)
+            {
+                return Result.Invalid(validationResult.AsErrors());
+            }
+
+
+
             var query = _context.Usuarios
                 .Include(u => u.Rol)
                 .AsQueryable();

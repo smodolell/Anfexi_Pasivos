@@ -18,7 +18,6 @@ public static class DependencyInjection
             .AddDbContextCheck<ApplicationDbContext>();
 #endif
 
-        builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
         // Customise default API behaviour
         builder.Services.Configure<ApiBehaviorOptions>(options =>

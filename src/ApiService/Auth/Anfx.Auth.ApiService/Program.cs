@@ -16,11 +16,12 @@ var configuration = builder.Configuration;
 
 // Add services to the container.
 builder.Services.AddApplicationServices();
-builder.Services.AddInfrastructureServices(configuration);
+builder.Services.AddCommonInfrastructureServices(configuration);
+builder.Services.AddAuthInfrastructureServices(configuration);
 builder.AddWebServices();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddControllers();
 
 // Configuración de JWT
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");

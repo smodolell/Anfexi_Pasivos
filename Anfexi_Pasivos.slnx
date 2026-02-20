@@ -7,6 +7,10 @@
     <Project Path="src/ApiService/Auth/Anfx.Auth.ApiService/Anfx.Auth.ApiService.csproj" />
     <Project Path="src/ApiService/Auth/Anfx.Auth.Application/Anfx.Auth.Application.csproj" Id="1eb6cbc7-12e9-42ee-bfe2-764e093b25d5" />
   </Folder>
+  <Folder Name="/Services/Catalogo/">
+    <Project Path="src/ApiService/Catalogo/Anfx.Catalogo.ApiService/Anfx.Catalogo.ApiService.csproj" />
+    <Project Path="src/ApiService/Catalogo/Anfx.Catalogo.Application/Anfx.Catalogo.Application.csproj" Id="b0b36b43-47e3-499a-967c-5316d570fa02" />
+  </Folder>
   <Folder Name="/Services/Pasivo/">
     <Project Path="src/ApiService/Pasivos/Anfx.Pasivos.ApiService/Anfx.Pasivos.ApiService.csproj" />
     <Project Path="src/ApiService/Pasivos/Anfx.Pasivos.Application/Anfx.Pasivos.Application.csproj" />
@@ -16,6 +20,7 @@
     <Project Path="src/ApiService/Sistema/Anfx.Sistema.Application/Anfx.Sistema.Application.csproj" Id="42d4b1d8-0053-495c-9f3c-b7041ac4f3e1" />
   </Folder>
   <Folder Name="/Shared/">
+    <Project Path="src/Shared/Anfx.Common.Application/Anfx.Common.Application.csproj" Id="cb5bf42a-ee3b-4296-87b7-8caf909bd438" />
     <Project Path="src/Shared/Anfx.Domain/Anfx.Domain.csproj" Id="a9bd2d8d-bf18-48d1-aaec-7fa288e5befc" />
     <Project Path="src/Shared/Anfx.Infrastructure/Anfx.Infrastructure.csproj" Id="8af7d5f4-d5f9-454c-aafc-2e4eb4bf6f42" />
   </Folder>

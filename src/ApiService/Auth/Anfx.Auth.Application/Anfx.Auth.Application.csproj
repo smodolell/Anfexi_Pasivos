@@ -22,7 +22,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Shared\Anfx.Domain\Anfx.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Anfx.Common.Application\Anfx.Common.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\DTOs\" />
+    <Folder Include="Common\Interfaces\" />
+    <Folder Include="Common\Services\" />
+    <Folder Include="Feactures\Auth\DTOs\" />
   </ItemGroup>
 
 </Project>

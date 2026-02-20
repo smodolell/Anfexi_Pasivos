@@ -1,5 +1,5 @@
-using Anfx.Auth.Application.Common.Interfaces;
 using Anfx.Auth.Application.Feactures.Auth.DTOs;
+using Anfx.Common.Application.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

@@ -1,11 +1,8 @@
 ﻿using Anfx.Sistema.ApiService.Infrastructure;
-using Anfx.Sistema.Application.Common.DTOs;
 using Anfx.Sistema.Application.Features.Menus.Commands;
 using Anfx.Sistema.Application.Features.Menus.DTOs;
 using Anfx.Sistema.Application.Features.Menus.Queries;
 using Ardalis.Result;
-using LiteBus.Commands.Abstractions;
-using LiteBus.Queries.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using IResult = Microsoft.AspNetCore.Http.IResult;
 

@@ -15,18 +15,19 @@ public class CreateUsuarioCommandHandler : ICommandHandler<CreateUsuarioCommand,
         _mapper = mapper;
     }
 
-    
+
     public async Task<Result<UsuarioDto>> HandleAsync(CreateUsuarioCommand request, CancellationToken cancellationToken = default)
     {
         try
         {
+            
             // Verificar si el email ya existe
             var emailExists = await _context.Usuarios
                 .AnyAsync(u => u.Email == request.Usuario.Email, cancellationToken);
 
             if (emailExists)
             {
-                return Result.NotFound("El email ya está registrado");
+                return Result.Invalid(new ValidationError("El email ya está registrado"));
             }
 
             // Verificar si el nombre de usuario ya existe

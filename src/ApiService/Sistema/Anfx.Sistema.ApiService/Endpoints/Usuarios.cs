@@ -1,11 +1,8 @@
-﻿using Anfx.Auth.Application.Common.DTOs;
-using Anfx.Sistema.ApiService.Infrastructure;
+﻿using Anfx.Sistema.ApiService.Infrastructure;
 using Anfx.Sistema.Application.Features.Usuarios.Commands;
 using Anfx.Sistema.Application.Features.Usuarios.DTOs;
 using Anfx.Sistema.Application.Features.Usuarios.Queries;
 using Ardalis.Result;
-using LiteBus.Commands.Abstractions;
-using LiteBus.Queries.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using IResult = Microsoft.AspNetCore.Http.IResult;
 
@@ -105,53 +102,27 @@ public class Usuarios : EndpointGroupBase
         return result.ToCustomMinimalApiResult();
     }
 
-    /// <summary>
-    /// Obtiene usuarios paginados y filtrados
-    /// </summary>
     public async Task<IResult> GetPaginados(
         [FromServices] IQueryMediator queryMediator,
         [FromQuery] string? q = null,
         [FromQuery] int page = 1,
         [FromQuery] int size = 10)
     {
-        // Validación de parámetros de paginación
-        if (page < 1 || size < 1)
-        {
-            var validationError = Result<PagedResultDto<UsuarioDto>>.Invalid(new List<ValidationError>
-            {
-                new() {
-                    Identifier = "pagination",
-                    ErrorMessage = "Los parámetros de paginación deben ser mayores a 0"
-                }
-            });
-            return validationError.ToCustomMinimalApiResult();
-        }
-
         var query = new GetUsuariosQuery(page, size, q);
         var result = await queryMediator.QueryAsync(query);
         return result.ToCustomMinimalApiResult();
     }
 
-    /// <summary>
-    /// Obtiene un usuario por ID
-    /// </summary>
+    
     public async Task<IResult> GetById(
         [FromServices] IQueryMediator queryMediator,
         int id)
     {
         var query = new GetUsuarioByIdQuery(id);
         var result = await queryMediator.QueryAsync(query);
-
-        // ToCustomMinimalApiResult manejará:
-        // - Success → 200 OK con UsuarioDto
-        // - NotFound → 404 Not Found con ProblemDetails
-        // - Error → 500 Internal Server Error
         return result.ToCustomMinimalApiResult();
     }
 
-    /// <summary>
-    /// Obtiene lista de roles para selects
-    /// </summary>
     public async Task<IResult> GetRoles(
         [FromServices] IQueryMediator queryMediator)
     {
@@ -160,9 +131,6 @@ public class Usuarios : EndpointGroupBase
         return result.ToCustomMinimalApiResult();
     }
 
-    /// <summary>
-    /// Crea un nuevo usuario
-    /// </summary>
     public async Task<IResult> Create(
         [FromServices] ICommandMediator commandMediator,
         [FromBody] UsuarioCreateDto model)
@@ -182,11 +150,6 @@ public class Usuarios : EndpointGroupBase
 
         var command = new CreateUsuarioCommand(model);
         var result = await commandMediator.SendAsync(command);
-
-        // ToCustomMinimalApiResult manejará:
-        // - Success → 201 Created con Location header
-        // - Invalid (ya registrado) → 400 Bad Request
-        // - Error → 500 Internal Server Error
         return result.ToCustomMinimalApiResult();
     }
 
@@ -225,12 +188,6 @@ public class Usuarios : EndpointGroupBase
 
         var command = new UpdateUsuarioCommand(model);
         var result = await commandMediator.SendAsync(command);
-
-        // ToCustomMinimalApiResult manejará:
-        // - Success → 200 OK
-        // - NotFound → 404 Not Found
-        // - Invalid (ya registrado) → 400 Bad Request
-        // - Error → 500 Internal Server Error
         return result.ToCustomMinimalApiResult();
     }
 
@@ -243,11 +200,6 @@ public class Usuarios : EndpointGroupBase
     {
         var command = new DeleteUsuarioCommand(id);
         var result = await commandMediator.SendAsync(command);
-
-        // ToCustomMinimalApiResult manejará:
-        // - Success → 200 OK
-        // - NotFound → 404 Not Found
-        // - Error → 500 Internal Server Error
         return result.ToCustomMinimalApiResult();
     }
 

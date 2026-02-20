@@ -8,5 +8,5 @@ global using MapsterMapper;
 global using Microsoft.Extensions.Logging;
 global using Microsoft.EntityFrameworkCore;
 global using Anfx.Domain.Entities;
-global using Anfx.Sistema.Application.Common.Interfaces;
-global using Anfx.Sistema.Application.Common.DTOs;
+global using Anfx.Common.Application.Interfaces;
+global using Anfx.Common.Application.DTOs;

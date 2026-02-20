@@ -1,5 +1,4 @@
-﻿using Anfx.Sistema.Application.Common.Services;
-using LiteBus.Commands;
+﻿using LiteBus.Commands;
 using LiteBus.Extensions.Microsoft.DependencyInjection;
 using LiteBus.Queries;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,11 +10,11 @@ public static class DependencyInjection
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
 
-        services.AddValidatorsFromAssemblyContaining<Dummy>();
+        services.AddValidatorsFromAssemblyContaining<SistemaApplicationMarker>();
 
         services.AddLiteBus(configuration =>
         {
-            var assembly = typeof(DependencyInjection).Assembly;
+            var assembly = typeof(SistemaApplicationMarker).Assembly;
 
             configuration.AddCommandModule(m => m.RegisterFromAssembly(assembly));
             configuration.AddQueryModule(m => m.RegisterFromAssembly(assembly));
@@ -23,10 +22,8 @@ public static class DependencyInjection
         });
 
 
-        services.AddScoped<IPaginator, Paginator>();
-        services.AddScoped<IDynamicSorter, DynamicSorter>();
 
         return services;
     }
 }
-class Dummy { }
+class SistemaApplicationMarker { }

@@ -52,7 +52,7 @@ export class EmpresaFormComponent implements OnInit {
   ngOnInit(): void {
     this.cargarTiposDirecciones();
     this.setupColoniaSync();
-    
+
     if (this.empresa) {
       this.form.patchValue({
         sEmpresa: this.empresa.sEmpresa,
@@ -71,7 +71,7 @@ export class EmpresaFormComponent implements OnInit {
         numInterior: this.empresa.numInterior,
         coloniaId: this.empresa.coloniaId
       });
-      
+
       // Si hay coloniaId, configurar el campo direccion para el componente
       if (this.empresa.coloniaId) {
         this.form.patchValue({
@@ -99,7 +99,7 @@ export class EmpresaFormComponent implements OnInit {
     this.loadingTiposDirecciones.set(true);
     // Deshabilitar el control mientras se cargan los datos
     this.form.get('tipoDireccionId')?.disable();
-    
+
     this.empresaService.getTiposDirecciones().subscribe({
       next: (response) => {
         if (response.success) {
@@ -124,7 +124,7 @@ export class EmpresaFormComponent implements OnInit {
   onSubmit(): void {
     if (this.form.valid) {
       const formData = this.form.value;
-      
+
       if (this.empresa && this.empresa.id) {
         // Actualizar
         const updateData: UpdateEmpresaDto = {

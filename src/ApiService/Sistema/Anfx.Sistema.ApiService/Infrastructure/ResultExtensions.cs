@@ -1,5 +1,5 @@
-﻿using Ardalis.Result;
-using Microsoft.AspNetCore.Mvc;
+﻿using Anfx.Sistema.ApiService.Responces;
+using Ardalis.Result;
 using System.Diagnostics;
 using IResult = Microsoft.AspNetCore.Http.IResult;
 
@@ -37,23 +37,28 @@ public static class ResultExtensions
 
     private static IResult HandleOk<T>(Result<T> result)
     {
-        return Results.Ok(new
+        var response = new ApiResponseDto<T>
         {
             Success = true,
             Message = result.SuccessMessage ?? "Operación exitosa",
             Data = result.Value,
+            Errors = new List<string>(),
+            StatusCode = StatusCodes.Status200OK,
             Timestamp = DateTime.UtcNow,
             TraceId = Activity.Current?.Id ?? HttpContextHelper.GetTraceId()
-        });
+        };
+        return Results.Ok(response);
     }
 
     private static IResult HandleCreated<T>(Result<T> result)
     {
-        var response = new
+        var response = new ApiResponseDto<T>
         {
             Success = true,
             Message = "Recurso creado exitosamente",
             Data = result.Value,
+            Errors = new List<string>(),
+            StatusCode = StatusCodes.Status201Created,
             Timestamp = DateTime.UtcNow,
             TraceId = Activity.Current?.Id ?? HttpContextHelper.GetTraceId()
         };
@@ -63,181 +68,186 @@ public static class ResultExtensions
 
     #endregion
 
-    #region Handlers de Error con ProblemDetails
+    #region Handlers de Error con ApiResponseDto
 
     private static IResult HandleNotFound<T>(Result<T> result)
     {
-        var problemDetails = new ProblemDetails
+        var response = new ApiResponseDto<T>
         {
-            Type = "https://tools.ietf.org/html/rfc9110#section-15.5.5",
-            Title = "Recurso no encontrado",
-            Status = StatusCodes.Status404NotFound,
-            Detail = GetFirstError(result, "El recurso solicitado no existe"),
-            Instance = $"urn:not-found:{Guid.NewGuid()}"
+            Success = false,
+            Message = "Recurso no encontrado",
+            Data = default,
+            Errors = GetErrorsList(result),
+            StatusCode = StatusCodes.Status404NotFound,
+            Timestamp = DateTime.UtcNow,
+            TraceId = Activity.Current?.Id ?? HttpContextHelper.GetTraceId()
         };
 
-        AddExtensions(problemDetails, result);
-        return Results.NotFound(problemDetails);
+        return Results.NotFound(response);
     }
 
     private static IResult HandleInvalid<T>(Result<T> result)
     {
-        // Agrupar errores de validación por campo
         var errors = result.ValidationErrors
-            .GroupBy(e => e.Identifier ?? "general")
-            .ToDictionary(
-                g => g.Key,
-                g => g.Select(e => e.ErrorMessage).ToArray()
-            );
+            .Select(e => $"{e.Identifier}: {e.ErrorMessage}")
+            .ToList();
 
-        var problemDetails = new HttpValidationProblemDetails(errors)
+        if (!errors.Any())
         {
-            Type = "https://tools.ietf.org/html/rfc9110#section-15.5.1",
-            Title = "Error de validación",
-            Status = StatusCodes.Status400BadRequest,
-            Detail = "Los datos enviados no cumplen con las validaciones requeridas",
-            Instance = $"urn:validation-error:{Guid.NewGuid()}"
+            errors = GetErrorsList(result);
+        }
+
+        var response = new ApiResponseDto<T>
+        {
+            Success = false,
+            Message = "Error de validación",
+            Data = default,
+            Errors = errors,
+            StatusCode = StatusCodes.Status400BadRequest,
+            Timestamp = DateTime.UtcNow,
+            TraceId = Activity.Current?.Id ?? HttpContextHelper.GetTraceId()
         };
 
-        AddExtensions(problemDetails, result);
-        return Results.BadRequest(problemDetails);
+        return Results.BadRequest(response);
     }
 
     private static IResult HandleError<T>(Result<T> result)
     {
-        var problemDetails = new ProblemDetails
+        var response = new ApiResponseDto<T>
         {
-            Type = "https://tools.ietf.org/html/rfc9110#section-15.6.1",
-            Title = "Error interno del servidor",
-            Status = StatusCodes.Status500InternalServerError,
-            Detail = GetFirstError(result, "Ha ocurrido un error inesperado"),
-            Instance = $"urn:server-error:{Guid.NewGuid()}"
+            Success = false,
+            Message = IsDevelopment()
+                ? "Error interno del servidor"
+                : "Ha ocurrido un error inesperado",
+            Data = default,
+            Errors = GetErrorsList(result),
+            StatusCode = StatusCodes.Status500InternalServerError,
+            Timestamp = DateTime.UtcNow,
+            TraceId = Activity.Current?.Id ?? HttpContextHelper.GetTraceId()
         };
 
-        AddExtensions(problemDetails, result, includeSensitiveData: IsDevelopment());
-        return Results.Problem(problemDetails);
+        return Results.Json(response, statusCode: StatusCodes.Status500InternalServerError);
     }
 
     private static IResult HandleConflict<T>(Result<T> result)
     {
-        var problemDetails = new ProblemDetails
+        var response = new ApiResponseDto<T>
         {
-            Type = "https://tools.ietf.org/html/rfc9110#section-15.5.10",
-            Title = "Conflicto de datos",
-            Status = StatusCodes.Status409Conflict,
-            Detail = GetFirstError(result, "El recurso ya existe o está en conflicto"),
-            Instance = $"urn:conflict:{Guid.NewGuid()}"
+            Success = false,
+            Message = "Conflicto de datos",
+            Data = default,
+            Errors = GetErrorsList(result),
+            StatusCode = StatusCodes.Status409Conflict,
+            Timestamp = DateTime.UtcNow,
+            TraceId = Activity.Current?.Id ?? HttpContextHelper.GetTraceId()
         };
 
-        AddExtensions(problemDetails, result);
-        return Results.Conflict(problemDetails);
+        return Results.Conflict(response);
     }
 
     private static IResult HandleUnauthorized<T>(Result<T> result)
     {
-        var problemDetails = new ProblemDetails
+        var response = new ApiResponseDto<T>
         {
-            Type = "https://tools.ietf.org/html/rfc9110#section-15.5.2",
-            Title = "No autorizado",
-            Status = StatusCodes.Status401Unauthorized,
-            Detail = "Debe autenticarse para acceder a este recurso",
-            Instance = $"urn:unauthorized:{Guid.NewGuid()}"
+            Success = false,
+            Message = "No autorizado",
+            Data = default,
+            Errors = GetErrorsList(result),
+            StatusCode = StatusCodes.Status401Unauthorized,
+            Timestamp = DateTime.UtcNow,
+            TraceId = Activity.Current?.Id ?? HttpContextHelper.GetTraceId()
         };
 
-        AddExtensions(problemDetails, result);
-        return Results.Json(problemDetails, statusCode: StatusCodes.Status401Unauthorized);
+        return Results.Json(response, statusCode: StatusCodes.Status401Unauthorized);
     }
 
     private static IResult HandleForbidden<T>(Result<T> result)
     {
-        var problemDetails = new ProblemDetails
+        var response = new ApiResponseDto<T>
         {
-            Type = "https://tools.ietf.org/html/rfc9110#section-15.5.4",
-            Title = "Acceso denegado",
-            Status = StatusCodes.Status403Forbidden,
-            Detail = "No tiene permisos para acceder a este recurso",
-            Instance = $"urn:forbidden:{Guid.NewGuid()}"
+            Success = false,
+            Message = "Acceso denegado",
+            Data = default,
+            Errors = GetErrorsList(result),
+            StatusCode = StatusCodes.Status403Forbidden,
+            Timestamp = DateTime.UtcNow,
+            TraceId = Activity.Current?.Id ?? HttpContextHelper.GetTraceId()
         };
 
-        AddExtensions(problemDetails, result);
-        return Results.Json(problemDetails, statusCode: StatusCodes.Status403Forbidden);
+        return Results.Json(response, statusCode: StatusCodes.Status403Forbidden);
     }
 
     private static IResult HandleUnavailable<T>(Result<T> result)
     {
-        var problemDetails = new ProblemDetails
+        var response = new ApiResponseDto<T>
         {
-            Type = "https://tools.ietf.org/html/rfc9110#section-15.6.4",
-            Title = "Servicio no disponible",
-            Status = StatusCodes.Status503ServiceUnavailable,
-            Detail = GetFirstError(result, "El servicio no está disponible temporalmente"),
-            Instance = $"urn:unavailable:{Guid.NewGuid()}"
+            Success = false,
+            Message = "Servicio no disponible",
+            Data = default,
+            Errors = GetErrorsList(result),
+            StatusCode = StatusCodes.Status503ServiceUnavailable,
+            Timestamp = DateTime.UtcNow,
+            TraceId = Activity.Current?.Id ?? HttpContextHelper.GetTraceId()
         };
 
-        AddExtensions(problemDetails, result);
-        return Results.Json(problemDetails, statusCode: StatusCodes.Status503ServiceUnavailable);
+        return Results.Json(response, statusCode: StatusCodes.Status503ServiceUnavailable);
     }
 
     private static IResult HandleCriticalError<T>(Result<T> result)
     {
-        var problemDetails = new ProblemDetails
+        var response = new ApiResponseDto<T>
         {
-            Type = "https://tools.ietf.org/html/rfc9110#section-15.6.1",
-            Title = "Error crítico del sistema",
-            Status = StatusCodes.Status500InternalServerError,
-            Detail = "Ha ocurrido un error crítico. Por favor contacte al administrador.",
-            Instance = $"urn:critical:{Guid.NewGuid()}"
+            Success = false,
+            Message = IsDevelopment()
+                ? "Error crítico del sistema"
+                : "Ha ocurrido un error crítico. Por favor contacte al administrador.",
+            Data = default,
+            Errors = GetErrorsList(result),
+            StatusCode = StatusCodes.Status500InternalServerError,
+            Timestamp = DateTime.UtcNow,
+            TraceId = Activity.Current?.Id ?? HttpContextHelper.GetTraceId()
         };
 
-        AddExtensions(problemDetails, result, includeSensitiveData: IsDevelopment());
-        return Results.Problem(problemDetails);
+        return Results.Json(response, statusCode: StatusCodes.Status500InternalServerError);
     }
 
     private static IResult HandleUnknown<T>(Result<T> result)
     {
-        var problemDetails = new ProblemDetails
+        var response = new ApiResponseDto<T>
         {
-            Type = "https://tools.ietf.org/html/rfc9110#section-15.6.1",
-            Title = "Error desconocido",
-            Status = StatusCodes.Status500InternalServerError,
-            Detail = "Ha ocurrido un error no controlado",
-            Instance = $"urn:unknown:{Guid.NewGuid()}"
+            Success = false,
+            Message = IsDevelopment()
+                ? "Error desconocido"
+                : "Ha ocurrido un error no controlado",
+            Data = default,
+            Errors = GetErrorsList(result),
+            StatusCode = StatusCodes.Status500InternalServerError,
+            Timestamp = DateTime.UtcNow,
+            TraceId = Activity.Current?.Id ?? HttpContextHelper.GetTraceId()
         };
 
-        AddExtensions(problemDetails, result, includeSensitiveData: IsDevelopment());
-        return Results.Problem(problemDetails);
+        return Results.Json(response, statusCode: StatusCodes.Status500InternalServerError);
     }
 
     #endregion
 
     #region Métodos auxiliares
 
-    private static void AddExtensions(ProblemDetails problemDetails, Ardalis.Result.IResult result, bool includeSensitiveData = false)
+    private static List<string> GetErrorsList(Ardalis.Result.IResult result)
     {
-        // Siempre incluir timestamp y traceId
-        problemDetails.Extensions["timestamp"] = DateTime.UtcNow.ToString("O");
-        problemDetails.Extensions["traceId"] = Activity.Current?.Id ?? HttpContextHelper.GetTraceId();
+        var errors = new List<string>();
 
-        // Incluir errores si existen
         if (result.Errors?.Any() == true)
         {
-            problemDetails.Extensions["errors"] = result.Errors;
+            errors.AddRange(result.Errors);
         }
 
-        // Incluir detalles sensibles solo en desarrollo
-        if (includeSensitiveData && result is Result<object> resultObj)
+        if (result.ValidationErrors?.Any() == true)
         {
-            problemDetails.Extensions["resultStatus"] = resultObj.Status.ToString();
-            if (resultObj.ValidationErrors?.Any() == true)
-            {
-                problemDetails.Extensions["validationErrors"] = resultObj.ValidationErrors;
-            }
+            errors.AddRange(result.ValidationErrors.Select(e => e.ErrorMessage));
         }
-    }
 
-    private static string GetFirstError(Ardalis.Result.IResult result, string defaultMessage)
-    {
-        return result.Errors?.FirstOrDefault() ?? defaultMessage;
+        return errors;
     }
 
     private static bool IsDevelopment()
@@ -247,7 +257,6 @@ public static class ResultExtensions
 
     #endregion
 }
-
 
 /// <summary>
 /// Helper para obtener TraceId desde HttpContext

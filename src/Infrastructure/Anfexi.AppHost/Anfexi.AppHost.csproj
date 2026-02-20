@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\ApiService\Auth\Anfx.Auth.ApiService\Anfx.Auth.ApiService.csproj" />
+    <ProjectReference Include="..\..\ApiService\Catalogo\Anfx.Catalogo.ApiService\Anfx.Catalogo.ApiService.csproj" />
     <ProjectReference Include="..\..\ApiService\Pasivos\Anfx.Pasivos.ApiService\Anfx.Pasivos.ApiService.csproj" />
     <ProjectReference Include="..\..\ApiService\Sistema\Anfx.Sistema.ApiService\Anfx.Sistema.ApiService.csproj" />
   </ItemGroup>

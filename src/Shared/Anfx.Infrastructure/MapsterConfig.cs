@@ -10,7 +10,6 @@ public static class MapsterConfig
 
 
         TypeAdapterConfig.GlobalSettings.Scan(
-            typeof(Sistema.Application.DependencyInjection).Assembly,
             typeof(MapsterConfig).Assembly);
 
 
