@@ -6,5 +6,4 @@
     <ShouldRunBuildScript>true</ShouldRunBuildScript>
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
   </PropertyGroup>
-
 </Project>

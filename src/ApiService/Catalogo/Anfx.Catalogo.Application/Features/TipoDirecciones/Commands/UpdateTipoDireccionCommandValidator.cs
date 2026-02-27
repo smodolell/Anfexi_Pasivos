@@ -1,6 +1,7 @@
 namespace Anfx.Catalogo.Application.Features.TipoDirecciones.Commands;
 
-public class UpdateTipoDireccionCommandValidator : AbstractValidator<CreateTipoDireccionCommand>
+
+public class UpdateTipoDireccionCommandValidator : AbstractValidator<UpdateTipoDireccionCommand>
 {
     public UpdateTipoDireccionCommandValidator()
     {

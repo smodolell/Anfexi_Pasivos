@@ -17,7 +17,8 @@ public class Empresas : EndpointGroupBase
     {
 
         var group = groupBuilder.MapGroup("/")
-           .WithTags("Empresas");
+            .RequireAuthorization()
+            .WithTags("Empresas");
 
 
         group.MapPost("/", Create)
