@@ -1,36 +1,43 @@
-using System.Diagnostics.Contracts;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Anfx.Domain.Entities;
+namespace Anfx.Pasivos.Application.Features.Contratos.DTOs;
 
-public partial class Contrato
+public class ContratoPasivoDto 
 {
-    public Contrato()
-    {
-        this.PSV_RelActivoPasivo = new HashSet<PSV_RelActivoPasivo>();
-    }
-
-    public int IdContrato { get; set; }
-    public string Contrato1 { get; set; }
-    public Nullable<int> IdPersona { get; set; }
+    public bool? TipoTasaMora { get; set; }
+    public bool? TipoTasa { get; set; }
+    public decimal MaxCapitalDisponible { get; set; }
+    [Required(ErrorMessage = "Requerido")]
+    public int IdLineaCredito { get; set; }
+    public string Fondeador { get; set; }
+    [Required(ErrorMessage = "Requerido")]
+    public string Contrato { get; set; }
+    [Required(ErrorMessage = "Requerido")]
     public Nullable<int> IdTipoCredito { get; set; }
     public Nullable<int> IdEstatusContrato { get; set; }
     public Nullable<decimal> Capital { get; set; }
     public Nullable<decimal> PorcEnganche { get; set; }
     public Nullable<decimal> Enganche { get; set; }
+    [Range(0.01, 999999999.99, ErrorMessage = "> 0")]
     public Nullable<decimal> CapitalFinanciado { get; set; }
+    [Required(ErrorMessage = "Requerido")]
     public int IdPeriodicidad { get; set; }
+    [Range(1, 540, ErrorMessage = "> 0")]
     public Nullable<int> Plazo { get; set; }
+    [Required(ErrorMessage = "Requerido")]
     public int IdMoneda { get; set; }
     public Nullable<System.DateTime> FecInicioContrato { get; set; }
     public Nullable<System.DateTime> FecPrimeraRenta { get; set; }
     public Nullable<System.DateTime> FecActivacion { get; set; }
     public Nullable<System.DateTime> FecFinContrato { get; set; }
+    [Required(ErrorMessage = "Requerido")]
     public int IdTasa { get; set; }
     public Nullable<decimal> TasaBase { get; set; }
     public Nullable<decimal> PuntosMas { get; set; }
     public Nullable<decimal> PuntosPor { get; set; }
     public Nullable<decimal> Tasa { get; set; }
     public Nullable<decimal> TasaBaseMora { get; set; }
+    [Required(ErrorMessage = "Requerido")]
     public int IdTasaMora { get; set; }
     public Nullable<decimal> PuntosMasMora { get; set; }
     public Nullable<decimal> PuntosPorMora { get; set; }
@@ -51,42 +58,30 @@ public partial class Contrato
     public Nullable<System.DateTime> FechaFirmaContrato { get; set; }
     public Nullable<int> IdTipoMantenimiento { get; set; }
     public Nullable<decimal> TasaMensual { get; set; }
-    public Nullable<int> IdUsuario { get; set; }
-    public Nullable<int> IdSucursal { get; set; }
-    public Nullable<int> IdReestructura { get; set; }
-    public Nullable<int> IdSector { get; set; }
-    public Nullable<int> IdSubSector { get; set; }
-    public Nullable<bool> EsWriteOff { get; set; }
     public Nullable<System.DateTime> FechaCierre { get; set; }
-    public Nullable<int> IdCotizador { get; set; }
     public Nullable<bool> TasaEsVariable { get; set; }
-    public string GraciaCapital { get; set; }
-    public string GraciaInteres { get; set; }
+    public int IdFondeador { get; set; }
     public Nullable<decimal> FactorFIRA { get; set; }
-    public Nullable<int> IdCredito { get; set; }
-    public Nullable<int> NumeroPagosCapital { get; set; }
-    public Nullable<int> IdTipoTablaAmortiza { get; set; }
+    [Required(ErrorMessage = "Requerido")]
+    public int IdTipoTablaAmortiza { get; set; }
     public Nullable<int> IdPeriodicidad_TTA { get; set; }
-    public Nullable<int> IdTipoPagoCapital { get; set; }
-    public Nullable<int> NoPagosIrregulares { get; set; }
-    public Nullable<int> IdTipoCapitalizacion { get; set; }
-    public bool Emproblemado { get; set; }
-    public string InversionPrincipal { get; set; }
-    public int IdPeriodicidadTC { get; set; }
-    public bool CapturaManualTAPasiva { get; set; }
+    public int? IdTipoCapitalizacion { get; set; }
+    public int? IdTipoPagoCapital { get; set; }
+    public int? NoPagosIrregulares { get; set; }
+    public List<PagoIrregularDto> Pagos { get; set; }
+    public ContratoPasivoDto()
+    {
+        FecInicioContrato = DateTime.Now;
+        IdEstatusContrato = 1;
+        TasaIva = 0.0000m;
+        IdPeriodicidad = 3;
+    }
+}
 
-    public virtual EstatusContrato EstatusContrato { get; set; }
-    public virtual SB_Periodicidad SB_Periodicidad { get; set; }
-    public virtual SB_TipoMoneda SB_TipoMoneda { get; set; }
-    public virtual Tasa Tasa1 { get; set; }
-    public virtual Tasa Tasa2 { get; set; }
-    public virtual TipoCalculoTasaVariable TipoCalculoTasaVariable { get; set; }
-    public virtual TipoMantenimiento TipoMantenimiento { get; set; }
-    public virtual ICollection<PSV_RelActivoPasivo> PSV_RelActivoPasivo { get; set; }
-    public virtual TipoCredito TipoCredito { get; set; }
-    public virtual PSV_TipoCapitalizacion PSV_TipoCapitalizacion { get; set; }
-    public virtual PSV_TipoPagoCapital PSV_TipoPagoCapital { get; set; }
-    public virtual PSV_TipoTablaAmortiza PSV_TipoTablaAmortiza { get; set; }
-    public virtual SB_Periodicidad SB_Periodicidad1 { get; set; }
-    public virtual SB_Periodicidad SB_Periodicidad2 { get; set; }
+public class PagoIrregularDto
+{
+    public int NoPago { get; set; }
+    public decimal Capital { get; set; }
+    [Required(ErrorMessage = " ")]
+    public System.DateTime? FecVencimiento { get; set; }
 }
