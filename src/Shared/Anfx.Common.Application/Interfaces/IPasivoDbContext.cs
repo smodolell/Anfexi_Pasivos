@@ -7,12 +7,9 @@ public interface IPasivoDbContext
 {
 
 
-
-
-
     DbSet<Rol> Roles { get; }
     DbSet<Usuario> Usuarios { get; }
-    /DbSet<PSV_Menu> PSV_Menu { get; }
+    DbSet<PSV_Menu> PSV_Menu { get; }
     DbSet<EstatusContrato> EstatusContrato { get; }
     DbSet<Genero> Genero { get; }
     DbSet<SB_Periodicidad> SB_Periodicidad { get; }

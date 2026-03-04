@@ -11,7 +11,7 @@ public class UpdateTipoCreditoCommand : ICommand<Result>
 
 
 
-internal class UpdateTipoCreditoCommandHandler : ICommandHandler<UpdateTipoCreditoCommand, Result>>
+internal class UpdateTipoCreditoCommandHandler : ICommandHandler<UpdateTipoCreditoCommand, Result>
 {
 
     private readonly IPasivoDbContext _context;
