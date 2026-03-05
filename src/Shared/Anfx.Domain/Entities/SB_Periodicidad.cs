@@ -15,20 +15,22 @@ public class SB_Periodicidad
     public int IdPeriodicidad { get; set; }
     public string CveCortaPeriodicidad { get; set; }
     public string DescPeriodicidad { get; set; }
-    public Nullable<int> ParamDias { get; set; }
-    public Nullable<int> ParamMes { get; set; }
+    public int? ParamDias { get; set; }
+    public int? ParamMes { get; set; }
     public bool sDefault { get; set; }
     public bool Band { get; set; }
-    public Nullable<bool> PedirDiasVencimiento { get; set; }
-    public Nullable<int> CantidadDiasVencimiento { get; set; }
-    public Nullable<bool> Activo { get; set; }
-    public Nullable<int> NoPagosMes { get; set; }
+    public bool? PedirDiasVencimiento { get; set; }
+    public int? CantidadDiasVencimiento { get; set; }
+    public bool? Activo { get; set; }
+    public int? NoPagosMes { get; set; }
     public decimal NroPagosAnio { get; set; }
 
-    public virtual ICollection<Contrato> Contrato { get; set; }
+   
     public virtual ICollection<PSV_TipoTablaAmortizaPeriodicidad> PSV_TipoTablaAmortizaPeriodicidad { get; set; }
     public virtual ICollection<PSV_Contrato> PSV_Contrato { get; set; }
     public virtual ICollection<PSV_Contrato> PSV_Contrato1 { get; set; }
+
+    public virtual ICollection<Contrato> Contrato { get; set; }
     public virtual ICollection<Contrato> Contrato1 { get; set; }
     public virtual ICollection<Contrato> Contrato2 { get; set; }
 }

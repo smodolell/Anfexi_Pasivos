@@ -34,7 +34,7 @@ internal class CreateTipoCreditoCommandHandler : ICommandHandler<CreateTipoCredi
             }
 
             var entity = _mapper.Map<PSV_TipoCredito>(model);
-            _context.PSV_TipoCredito.Add(entity);
+            await _context.PSV_TipoCredito.AddAsync(entity);
 
             await _context.SaveChangesAsync(cancellationToken);
 

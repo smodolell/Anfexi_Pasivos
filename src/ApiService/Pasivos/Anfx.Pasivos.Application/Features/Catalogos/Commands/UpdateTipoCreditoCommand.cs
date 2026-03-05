@@ -43,7 +43,8 @@ internal class UpdateTipoCreditoCommandHandler : ICommandHandler<UpdateTipoCredi
                 return Result.NotFound("Tipo de Credito no existe");
             }
             _mapper.Map(model, entity);
-            _context.PSV_TipoCredito.Add(entity);
+
+            _context.PSV_TipoCredito.Update(entity);
 
             await _context.SaveChangesAsync(cancellationToken);
 

@@ -61,9 +61,17 @@ public static class DependencyInjection
 
     public static IServiceCollection AddCatalogoInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        //services.AddScoped<ISistemaDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
         services.AddScoped<ICatalogoDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+        services.AddScoped<IExcelExportService, ExcelExportService>();
+        services.AddScoped<IPaginator, Paginator>();
+        services.AddScoped<IDynamicSorter, DynamicSorter>();
+        return services;
+    }
+    public static IServiceCollection AddPasivosInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+    {
+        
+        services.AddScoped<IPasivoDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
         services.AddScoped<IExcelExportService, ExcelExportService>();
         services.AddScoped<IPaginator, Paginator>();
         services.AddScoped<IDynamicSorter, DynamicSorter>();

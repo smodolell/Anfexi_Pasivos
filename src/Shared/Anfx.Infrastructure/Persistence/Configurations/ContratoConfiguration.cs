@@ -1,6 +1,7 @@
 using Anfx.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 
 namespace Anfx.Infrastructure.Persistence.Configurations;
 
@@ -25,6 +26,16 @@ public class ContratoConfiguration : IEntityTypeConfiguration<Contrato>
         builder.HasOne(e => e.SB_Periodicidad)
             .WithMany(p => p.Contrato)
             .HasForeignKey(e => e.IdPeriodicidad)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(c => c.SB_Periodicidad1)
+            .WithMany(p => p.Contrato1)
+            .HasForeignKey(c => c.IdPeriodicidad_TTA)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(c => c.SB_Periodicidad2)
+            .WithMany(p => p.Contrato2)
+            .HasForeignKey(c => c.IdPeriodicidadTC)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(e => e.SB_TipoMoneda)

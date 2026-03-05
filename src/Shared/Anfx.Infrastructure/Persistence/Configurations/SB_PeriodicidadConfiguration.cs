@@ -19,5 +19,8 @@ public class SB_PeriodicidadConfiguration : IEntityTypeConfiguration<SB_Periodic
         builder.Property(e => e.DescPeriodicidad)
             .IsRequired()
             .HasMaxLength(100);
+
+
+  
     }
 }

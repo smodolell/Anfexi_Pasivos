@@ -20,12 +20,3 @@ public class TipoCreditoDto
     public int IdTipoMovimiento_Mora { get; set; }
 
 }
-
-
-public class TipoCreditoDtoValidator :AbstractValidator<TipoCreditoDto>{
-
-    public TipoCreditoDtoValidator()
-    {
-        
-    }
-}
